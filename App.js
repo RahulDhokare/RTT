@@ -1,12 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import WelcomeScreen from './Screens/LoginScreen/WelcomeScreen';
+import { useState, useEffect } from 'react';
+import Login from './Screens/LoginScreen/Login';
+import RootNavigation from './RootNavigation';
 
 export default function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 10000);
+
+    return () => clearTimeout(timer); 
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <RootNavigation/>
+  //   <View >
+  //   {isLoaded?<WelcomeScreen/>:<Login/>}
+  //  </View>
+  // <Login/>
   );
 }
 
