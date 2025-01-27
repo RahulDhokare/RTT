@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View,Text ,StatusBar,StyleSheet,TouchableOpacity} from 'react-native'
 import BookingDate from './BookingDate'
 import BookingDetails from './BookingDetails'
@@ -10,9 +10,10 @@ import {
   createStaticNavigation,
   useNavigation,
 } from '@react-navigation/native';
-
+import BookingDiary from './BookingDiary';
 const Header = () => {
     const navigation = useNavigation();
+    const [activeScreen, setActiveScreen] = useState('glance');
     
   return (
     <View style={styles.conainer}>
@@ -20,7 +21,7 @@ const Header = () => {
         <RestaurantName/>
         <StatusBar />
         <BookingDate />
-        <BookingDetails/>
+        {activeScreen === 'glance' ? <BookingDetails /> : <BookingDiary />}
         </View>
         <View style={styles.addBookingContainer}>
         <TouchableOpacity 
@@ -32,7 +33,7 @@ const Header = () => {
       </View>
       
         <View>
-        <FooterNav/>
+        <FooterNav style={styles.footer} onChangeScreen={setActiveScreen} activeScreen={activeScreen} />
         </View>
     </View>
   )
@@ -47,8 +48,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 120, 
     right: 20, 
-    zIndex: 10, 
+    // zIndex: 10, 
   },
+  // footer:{
+  //   position: 'absolute',
+  //   bottom: 0,
+  //   // width: '100%',
+  // }
 })
 
 export default Header

@@ -7,7 +7,7 @@ const BookingDetails = () => {
   const peoplecount= 0;
   const bookingCount = 0;
   return (
-    <View >
+    <View style={styles.mainConatiner}>
       <View style={styles.container}>
     <Text style={styles.total}>Total Expected: </Text>
     <Ionicons name="people-outline" size={24} color="black" />
@@ -27,6 +27,10 @@ const BookingDetails = () => {
   )
 }
 const styles = StyleSheet.create({
+  mainConatiner:{
+    width:'100%',
+    height:'71%',
+  },
   container: {
     // flex: 1, 
     padding: 20,
@@ -54,6 +58,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    // backgroundColor: 'red',
   },
   bookinginfo_text:{
     fontSize: 16,
@@ -64,6 +69,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc', 
     marginHorizontal: 20, 
     marginVertical: 10, 
+    // backgroundColor:'red'
   },
 })
 
