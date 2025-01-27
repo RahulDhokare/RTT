@@ -13,6 +13,7 @@ import {
 
 const Header = () => {
     const navigation = useNavigation();
+    
   return (
     <View style={styles.conainer}>
       <View style={styles.content}>
@@ -23,7 +24,7 @@ const Header = () => {
         </View>
         <View style={styles.addBookingContainer}>
         <TouchableOpacity 
-         onPress={() => navigation.navigate('addBoking')}>
+         onPress={() => navigation.navigate('Add New Booking')}>
         <AntDesign name="pluscircle" size={60} color="red" />    
         {/* <AddBooking />  */}
         </TouchableOpacity>

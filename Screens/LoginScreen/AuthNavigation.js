@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Login from './Login'
 import Header from '../MainScreen/Header'
 import AddBooking from '../MainScreen/AddBooking'
+import BookingDetails from '../MainScreen/BookingDetails'
+import BookingDiary from '../MainScreen/BookingDiary'
 const Stack = createNativeStackNavigator()
 const AuthNavigation = () => {
   return (
@@ -14,8 +16,14 @@ const AuthNavigation = () => {
     <Stack.Screen name="heder" component={Header}
     options={{headerShown:false}}/>
 
-    <Stack.Screen name="addBoking" component={AddBooking}
-    />
+    <Stack.Screen name="Add New Booking" component={AddBooking}
+     />
+
+<Stack.Screen name="BookingDetails" component={BookingDetails}
+     />
+
+<Stack.Screen name="BookingDiary" component={BookingDiary}
+     />
 
 
 
