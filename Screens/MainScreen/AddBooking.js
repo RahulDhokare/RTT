@@ -1,248 +1,464 @@
-import React, { useState } from 'react'
-import { View ,Text,StyleSheet,TouchableOpacity,TextInput,Button,Platform } from 'react-native'
-import AntDesign from '@expo/vector-icons/AntDesign';
+import React, { useState } from 'react';
 import {
-  createStaticNavigation,
-  useNavigation,
-} from '@react-navigation/native';
-import { ScrollView } from 'react-native';
-import DatePicker from 'react-native-date-picker';
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
-import Checkbox from 'expo-checkbox';
-import { useEffect } from 'react';
-import * as Calendar from 'expo-calendar';
+import Checkbox from 'expo-checkbox'; // or from 'react-native-paper'
+import { useNavigation } from '@react-navigation/native';
 
-const AddBooking = () => {
+// Sample constants
+const DayTime = [{ morning: 'Morning', evening: 'Evening' }];
+const MealType = [{ veg: 'Vegetarian', nonveg: 'Non-Vegetarian' }];
+
+export default function BookingForm() {
   const navigation = useNavigation();
-  const [openingDate, setOpeningDate] = useState(new Date());
-  const [openDatePicker, setOpenDatePicker] = useState(false);
+
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue1, setSelectedValue1] = useState('');
   const [isChecked, setChecked] = useState(false);
   const [isChecked1, setChecked1] = useState(false);
-  
-  const onChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate || openingDate;
-    setOpeningDate(currentDate);
+
+  const [guests, setGuests] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [duration, setDuration] = useState('');
+  const [dietary, setDietary] = useState('');
+  const [specialRequest, setSpecialRequest] = useState('');
+  const [notes, setNotes] = useState('');
+  const [errors, setErrors] = useState({});
+  const timeOptions = Object.entries(DayTime[0]);
+  const mealOptions = Object.entries(MealType[0]);
+
+  const onChange = (event, selectedDate) => {
+    setShow(false);
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
   };
-  useEffect(() => {
-    (async () => {
-      const { status } = await Calendar.requestCalendarPermissionsAsync();
-      if (status === 'granted') {
-        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-        console.log('Here are all your calendars:');
-        console.log({ calendars });
-      }
-    })();
-  }, []);
+
+  const handleSubmit = () => {
+    if (!selectedValue) return alert('Please select a time slot');
+    if (!selectedValue1) return alert('Please select a meal type');
+    if (!guests) return alert('Please enter number of guests');
+    if (!mobile) return alert('Please enter mobile number');
+    if (!firstName) return alert('Please enter first name');
+    if (!lastName) return alert('Please enter last name');
+    if (!email) return alert('Please enter email');
+    if (!duration) return alert('Please enter time duration');
+
+    const bookingData = {
+      visitType: isChecked ? 'Walk-in' : 'On-Call',
+      date,
+      timeSlot: selectedValue,
+      mealType: selectedValue1,
+      guests,
+      mobile,
+      firstName,
+      lastName,
+      email,
+      duration,
+      dietary,
+      specialRequest,
+      notes,
+      specialOffers: isChecked,
+      marketingConsent: isChecked1,
+    };
+
+    console.log('Booking Data:', bookingData);
+    alert('Form submitted successfully!');
+    // navigation.navigate('SuccessScreen', { bookingData });
+  };
+
+  const validationGuest = () => {
+    console.log('Validating :', mobile);
+    const newErrors = { ...errors };
+    // Validate guests
+  if (!guests.trim()) {
+    newErrors.guests = 'Guests is required';
+  } else if (!/^\d{1,2}$/.test(guests)) {
+    newErrors.guests = 'Enter a valid number (1–99)';
+  } else {
+    delete newErrors.guests;
+  }
+  setErrors(newErrors);
+  };
+
+  const validationMobile = () => {
+    const newErrors = { ...errors };
+    // Validate mobile
+    if (!mobile.trim()) {
+      newErrors.mobile = "Mobile number is required";
+    } else if (!/^\d{1,10}$/.test(mobile)) {
+      newErrors.mobile = "Enter a valid 10-digit mobile number";
+    } else {
+      delete newErrors.mobile;
+    }
+    setErrors(newErrors);
+  };
+  const validationEmail = (email) =>{
+    console.log("email",email)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+    const newErrors = { ...errors };
+    // Validate Email
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'Enter a valid Email';
+    } else {
+      delete newErrors.email;
+    }
+    setErrors(newErrors);
+  }
+  const validationFirstName = () =>{
+    const newErrors = { ...errors };
+    // Validate First Name
+  if (!firstName.trim()) {
+    newErrors.firstName = 'First Name is required';
+  }else {
+    delete newErrors.firstName;
+  }
+  setErrors(newErrors);
+  }
+  const validationLastName = () =>{
+    const newErrors = { ...errors };
+    // Validate Last Name
+   if (!lastName.trim()) {
+    newErrors.lastName = 'Last Name is required';
+  } else {
+    delete newErrors.lastName;
+  }
+  setErrors(newErrors);
+  }
+  const validationDuration = () =>{
+    const newErrors = { ...errors };
+     // Validate Duration
+     if (!duration.trim()) {
+      newErrors.duration = 'Time Duration is required';
+    }else {
+      delete newErrors.duration;
+    }
+    setErrors(newErrors);
+  }
+  const validationMealType = () =>{
+    const newErrors = { ...errors };
+    
+    // Validate meal type
+    // if (!mealOptions.trim()) {
+    //   newErrors.mealOptions = 'Meal Type is required';
+    // } else {
+    //   delete newErrors.mealOptions;
+    // }
+    setErrors(newErrors);
+  }
+  const validationTimeSlot = () =>{
+    const newErrors = { ...errors };
+     // Validate timeslot
+    // if (!timeOptions.trim()) {
+    //   newErrors.timeOptions = 'Time Slot is required';
+    // } else {
+    //   delete newErrors.timeOptions;
+    // }
+    setErrors(newErrors);
+  }
+  
+
   return (
     <View style={styles.container}>
-       <ScrollView>
+      <ScrollView>
         <View style={styles.chipContainer}>
-        <View style={styles.chip}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.chip, isChecked && styles.chipSelected]}
+            onPress={() => setChecked(true)}
+          >
             <Text>Walk-in</Text>
-            </TouchableOpacity>
-        </View>
-        <View style={styles.chip}>
-        <TouchableOpacity>
-          <Text>On-Call</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.chip, !isChecked && styles.chipSelected]}
+            onPress={() => setChecked(false)}
+          >
+            <Text>On-Call</Text>
           </TouchableOpacity>
         </View>
-        </View>
-        <Text style={styles.textside}>Opening Date:</Text>
-        <View style={styles.dateConatiner}>
-       
-        <Button title="Create a new calendar" onPress={createCalendar} />
 
-      <DatePicker
-        modal
-        open={openDatePicker}
-        date={openingDate}
-        onConfirm={(date) => {
-          setOpenDatePicker(false);
-          setOpeningDate(date);
-        }}
-        onCancel={() => {
-          setOpenDatePicker(false);
-        }}
-      />
+        <Text style={styles.textside}>Opening Date:</Text>
+        <View style={styles.input}>
+          <TouchableOpacity onPress={() => setShow(true)}>
+            <Text> {date.toDateString()}</Text>
+          </TouchableOpacity>
+          {show && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={onChange}
+            />
+          )}
         </View>
-        <Text style={styles.textside}>time Slot</Text>
-        <Picker
-          style={styles.picker}
-        ></Picker>
-        <Text style={styles.textside}>Meal Type* (Select Time Slot to update)</Text>
-        <Picker
-          style={styles.picker1}
-        ></Picker>
+
+        <Text style={styles.textside}>Time Slot</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            style={styles.picker}
+            selectedValue={selectedValue}
+            onValueChange={(itemValue) => setSelectedValue(itemValue)}
+          >
+            <Picker.Item label="Select time slot" value="" />
+            {timeOptions.map(([key, value]) => (
+              <Picker.Item key={key} label={value} value={key} />
+            ))}
+          </Picker>
+        </View>
+
+        <Text style={styles.textside}>
+          Meal Type* (Select Time Slot to update)
+        </Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            style={styles.picker}
+            selectedValue={selectedValue1}
+            onValueChange={(itemValue) => setSelectedValue1(itemValue)}
+          >
+            <Picker.Item label="Select meal type" value="" />
+            {mealOptions.map(([key, value]) => (
+              <Picker.Item key={key} label={value} value={key} />
+            ))}
+          </Picker>
+        </View>
+
         <Text style={styles.textside}>Number of Guests*</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder="Enter Number of Guests"
-                />
-                <Text style={styles.textside}>Mobile Number*</Text>
+          style={[styles.input, errors.guests && { borderColor: "red" }]}
+          placeholder="Enter Number of Guests"
+          keyboardType="numeric"
+          value={guests}
+          onChangeText={(text) => {
+            setGuests(text);
+             validationGuest(text); 
+          }}
+          onBlur={() => validationGuest(guests)}
+        />
+        {errors.guests && <Text style={styles.errorText}>{errors.guests}</Text>}
+
+        <Text style={styles.textside}>Mobile Number*</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder="Enter Mobile Number"
-                />
-                <Text style={styles.textside}>First Name*</Text>
+          style={[styles.input, errors.mobile && { borderColor: "red" }]}
+          placeholder="Enter Mobile Number"
+          keyboardType="phone-pad"
+          value={mobile}
+          onChangeText={(text) => {
+            setMobile(text);
+             validationMobile(text); 
+          }}
+          onBlur={() => validationMobile(mobile)}
+        />
+        {errors.mobile && <Text style={styles.errorText}>{errors.mobile}</Text>}
+
+        <Text style={styles.textside}>First Name*</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder="Enter First Name "
-                />
+          style={[styles.input, errors.firstName && { borderColor: "red" }]}
+          placeholder="Enter First Name"
+          value={firstName}
+          onChangeText={(text) => {
+            setFirstName(text);
+            if (errors.firstName) validationFirstName(text); 
+          }}
+          onBlur={() => validationFirstName(firstName)}
+        />
+        {errors.firstName && (
+          <Text style={styles.errorText}>{errors.firstName}</Text>
+        )}
+
         <Text style={styles.textside}>Last Name*</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder="Enter Last Name"
-                />
+          style={[styles.input, errors.lastName && { borderColor: "red" }]}
+          placeholder="Enter Last Name"
+          value={lastName}
+          onChangeText={(text) => {
+            setLastName(text);
+            if (errors.lastName) validationLastName(text); 
+          }}
+          onBlur={() => validationLastName(lastName)}
+        />
+        {errors.lastName && (
+          <Text style={styles.errorText}>{errors.lastName}</Text>
+        )}
+
         <Text style={styles.textside}>Email*</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder=" Enter Email"
-                />
-         <Text style={styles.textside}>Time Duration (in minute)*</Text>
+          style={[styles.input, errors.email && { borderColor: "red" }]}
+          placeholder="Enter Email"
+          keyboardType="email-address"
+          value={email}
+          // onChangeText={setEmail}
+          onChangeText={(text) => {
+            setEmail(text);
+            if (errors.email) validationEmail(text); 
+          }}
+          onBlur={() => validationEmail(email)}
+        />
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
+        <Text style={styles.textside}>Time Duration (in minutes)*</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder="Time Duration"
-                />
+          style={[styles.input, errors.duration && { borderColor: "red" }]}
+          placeholder="Time Duration"
+          keyboardType="numeric"
+          value={duration}
+          onChangeText={(text) => {
+            setDuration(text);
+            if (errors.duration) validationDuration(text); 
+          }}
+          onBlur={() => validationDuration(duration)}
+        />
+        {errors.duration && (
+          <Text style={styles.errorText}>{errors.duration}</Text>
+        )}
+
         <Text style={styles.textside}>Dietary Request</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder=" Enter Dietary Request(if any) "
-                />
+          style={styles.input}
+          placeholder="Enter Dietary Request (if any)"
+          value={dietary}
+          onChangeText={setDietary}
+        />
+
         <Text style={styles.textside}>Special Request</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder="Special Request(if any) "
-                />   
+          style={styles.input}
+          placeholder="Special Request (if any)"
+          value={specialRequest}
+          onChangeText={setSpecialRequest}
+        />
+
         <Text style={styles.textside}>Notes</Text>
         <TextInput
-                  style={styles.input}
-                  placeholder="Write Somthing(if any) "
-                />    
+          style={styles.input}
+          placeholder="Write Something (if any)"
+          value={notes}
+          onChangeText={setNotes}
+        />
+
         <View style={styles.checkboxContainer}>
-        <Checkbox style={styles.checkbox} value={isChecked} onValueChange={setChecked} color={ 'red'} />
-        <Text style={styles.checkboxText}>Customer wishes special offers to be sent via e-mail.</Text> 
-        </View>  
-        <View style={styles.checkboxContainer}> 
-        <Checkbox style={styles.checkbox} value={isChecked1} onValueChange={setChecked1} color={ 'red'} /> 
-        <Text style={styles.checkboxText}>Customer wishes special offers to be sent via e-mail.</Text>
+          <Checkbox
+            value={isChecked}
+            onValueChange={setChecked}
+            color={"red"}
+          />
+          <Text style={styles.checkboxText}>
+            Customer wishes special offers to be sent via email.
+          </Text>
         </View>
-          <TouchableOpacity style={styles.btn1}>
-                <Text style={styles.login}>Create Booking</Text>
-              </TouchableOpacity>
 
-       </ScrollView>
-       
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            value={isChecked1}
+            onValueChange={setChecked1}
+            color={"red"}
+          />
+          <Text style={styles.checkboxText}>
+            Customer agrees to receive marketing communications.
+          </Text>
+        </View>
+
+        <TouchableOpacity style={styles.btn1} onPress={handleSubmit}>
+          <Text style={styles.login}>Create Booking</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
-  )
-}
-async function getDefaultCalendarSource() {
-  const defaultCalendar = await Calendar.getDefaultCalendarAsync();
-  return defaultCalendar.source;
-}
-
-async function createCalendar() {
-  const defaultCalendarSource =
-    Platform.OS === 'android'
-      ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'Expo Calendar' };
-  const newCalendarID = await Calendar.createCalendarAsync({
-    title: 'Expo Calendar',
-    color: 'blue',
-    entityType: Calendar.EntityTypes.EVENT,
-    sourceId: defaultCalendarSource.id,
-    source: defaultCalendarSource,
-    name: 'internalCalendarName',
-    ownerAccount: 'personal',
-    accessLevel: Calendar.CalendarAccessLevel.OWNER,
-  });
-  console.log(`Your new calendar ID is: ${newCalendarID}`);
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+     flex: 1,
+     padding: 16 
     },
-  chipContainer:{
-    flexDirection:'row',
-    margin:10,
-  },
-  chip:{
-    backgroundColor:'white',
-    padding:10,
-    margin:10,
-    borderRadius:15
-  },
-  textside:{
-    padding:10,
-  },
-  picker:{
-    backgroundColor:'white',
-    width:'20%',
-    height:40,
-    padding:10,
-    margin:10,
-    borderRadius:25
-  },
-  picker1:{
-    backgroundColor:'white',
-    padding:10, 
-    margin:10,
-    borderRadius:25,
-    height:40,
-  },
-  input:{
+
+  chipContainer: { 
     flexDirection: 'row',
-    alignItems: 'center',
-    width: '95%',
+     marginVertical: 10 
+    },
+
+  chip: {
     padding: 10,
-    margin: 10,
-    backgroundColor: 'white',
-    // borderRadius: 10,
-    elevation: 20,
-    height: 50,
+    borderWidth: 1,
+    borderRadius: 20,
+    marginRight: 10,
+    borderColor: 'gray',
   },
-  dateConatiner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '95%',
-    margin: 10,
-    // padding: 10,
-    // marginVertical: 10,
-    // paddingHorizontal: 10,
-    backgroundColor: 'white',
-    // elevation: 20,
-    // height: 50,
+  chipSelected: {
+    backgroundColor: '#ddd',
   },
-  btn1: {
-    width: '95%',
-    // height: 50,
-    padding:10,
-    margin:10,
-    // justifyContent: 'center',
-    // paddingVertical: 10,
-    elevation: 20,
-    backgroundColor: 'red',
+  textside: { 
+    marginTop: 10,
+     fontWeight: 'bold' 
+    },
+  dateContainer: {
+     marginVertical: 10 ,
+
+    },
+
+  input: {
+    borderWidth: 1,
+    padding: 10,
+    marginVertical: 5,
     borderRadius: 5,
+    borderColor: '#ccc',
   },
-  login: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  selectInput: {
+    borderWidth: 1,
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+    borderColor: '#ccc',
   },
   checkboxContainer: {
     flexDirection: 'row',
-    padding: 10,
     alignItems: 'center',
-
-  } ,
-  checkbox: {
-    
+    marginVertical: 5,
   },
   checkboxText: {
-    marginLeft: 5,
+     marginLeft: 10
+     },
+  btn1: {
+    backgroundColor: 'tomato',
+    padding: 15,
+    alignItems: 'center',
+    marginTop: 20,
+    borderRadius: 10,
   },
-})
+  login: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
 
-export default AddBooking
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    height: 45, // Same as your TextInput height
+    justifyContent: 'center',
+    marginVertical: 5,
+  },
+  picker: {
+    width: '100%',
+  },
+
+  errorText: {
+    color: 'red',
+    marginLeft: 5,
+    fontSize: 12,
+  }
+  
+  
+});

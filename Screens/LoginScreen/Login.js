@@ -4,6 +4,7 @@ import { Octicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import Logo from '../../assets/playstore-icon.png';
 import Header from '../MainScreen/Header';
+import { showMessage } from "react-native-flash-message";
 
 
 const Login = ({ navigation }) => {
@@ -11,6 +12,29 @@ const Login = ({ navigation }) => {
   const [passwordfocus, setPasswordFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState('');
+  const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+
+
+const signIn = () => {                        
+    const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+
+    if (!strongRegex.test(email)) {
+        showMessage({
+            message: "Invalid Email",
+            description: "Please enter a valid email address.",
+            type: "danger",
+        });
+        return false;
+    } else if (password.length < 8) {
+        showMessage({
+            message: "Weak Password",
+            description: "Password must be at least 8 characters long.",
+            type: "danger",
+        });
+        return false;
+    }
+}
 
   return (
     <View style={styles.container}>
@@ -22,6 +46,7 @@ const Login = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Email"
+          onChangeText={(email) => setEmail(email)}
         />
       </View>
       <View style={styles.form_field}>
@@ -29,6 +54,7 @@ const Login = ({ navigation }) => {
           placeholder="Password"
           style={styles.inputPassword}
           secureTextEntry={showPassword === false ? true : false}
+          onChangeText={(password) => setPassword(password)}
         />
         <Octicons
           name={showPassword == false ? "eye-closed" : "eye"}
@@ -49,7 +75,8 @@ const Login = ({ navigation }) => {
           <Picker.Item label="Supervisor" value="Supervisor" />
         </Picker>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity onPress={() => signIn()} */}
+      <TouchableOpacity 
         onPress={() => navigation.navigate('heder')}
         style={styles.btn1} >
         <Text style={styles.login}>Log in</Text>
