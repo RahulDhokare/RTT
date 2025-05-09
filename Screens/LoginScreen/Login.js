@@ -6,66 +6,106 @@ import Logo from '../../assets/playstore-icon.png';
 import Header from '../MainScreen/Header';
 import { showMessage } from "react-native-flash-message";
 
-
-
 const Login = ({ navigation }) => {
   const [emailfocus, setEmailFocus] = useState(false);
   const [passwordfocus, setPasswordFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState('');
   const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
+  const signIn = () => {
+    const newErrors = {};
 
-const signIn = () => {                        
-    const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
-
-    if (!strongRegex.test(email)) {
-        showMessage({
-            message: "Invalid Email",
-            description: "Please enter a valid email address.",
-            type: "danger",
-        });
-        return false;
-    } else if (password.length < 8) {
-        showMessage({
-            message: "Weak Password",
-            description: "Password must be at least 8 characters long.",
-            type: "danger",
-        });
-        return false;
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
     }
-}
+
+    if (!password.trim()) {
+      newErrors.password = 'Password is required';
+    }
+
+    if (!selectedRole) {
+      newErrors.inValid = 'Please select a role';
+    }
+
+    if (Object.keys(newErrors).length === 0) {
+      console.log("Login successful");
+      navigation.navigate('heder');
+    }
+
+    setErrors(newErrors);
+  };
+
+  const validationEmail = (email) => {
+    const newErrors = { ...errors };
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else {
+      delete newErrors.email;
+    }
+    setErrors(newErrors);
+  };
 
   return (
-
     <View style={styles.container}>
       <View style={styles.logo}>
         <Image source={Logo} style={styles.logo1} />
       </View>
       <Text style={styles.text}>Login To Your Account</Text>
-      <View style={styles.form_field}>
+
+      {/* Email Field */}
+      <View style={[
+        styles.form_field,
+        errors.email && { borderColor: 'red', borderWidth: 1 }
+      ]}>
         <TextInput
           style={styles.input}
           placeholder="Email"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(text) => {
+            setEmail(text);
+            if (errors.email) validationEmail(text);
+          }}
+          onBlur={() => validationEmail(email)}
         />
       </View>
-      <View style={styles.form_field}>
+      {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
+      {/* Password Field */}
+      <View style={[
+        styles.form_field,
+        errors.password && { borderColor: 'red', borderWidth: 1 }
+      ]}>
         <TextInput
           placeholder="Password"
           style={styles.inputPassword}
-          secureTextEntry={showPassword === false ? true : false}
-          onChangeText={(password) => setPassword(password)}
+          secureTextEntry={!showPassword}
+          onChangeText={(text) => {
+            setPassword(text);
+            if (errors.password) {
+              setErrors(prev => {
+                const newErr = { ...prev };
+                delete newErr.password;
+                return newErr;
+              });
+            }
+          }}
         />
         <Octicons
-          name={showPassword == false ? "eye-closed" : "eye"}
+          name={!showPassword ? "eye-closed" : "eye"}
           size={20}
           color="black"
           onPress={() => setShowPassword(!showPassword)}
         />
       </View>
-      <View style={styles.form_field}>
+      {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+
+      {/* Role Picker */}
+      <View style={[
+        styles.form_field,
+        !selectedRole && errors.inValid && { borderColor: 'red', borderWidth: 1 }
+      ]}>
         <Picker
           selectedValue={selectedRole}
           onValueChange={(itemValue) => setSelectedRole(itemValue)}
@@ -77,10 +117,13 @@ const signIn = () => {
           <Picker.Item label="Supervisor" value="Supervisor" />
         </Picker>
       </View>
-      {/* <TouchableOpacity onPress={() => signIn()} */}
-      <TouchableOpacity 
-        onPress={() => navigation.navigate('heder')}
-        style={styles.btn1} >
+      {errors.inValid && <Text style={styles.errorText}>{errors.inValid}</Text>}
+
+      {/* Submit Button */}
+      <TouchableOpacity
+        onPress={() => signIn()}
+        style={styles.btn1}
+      >
         <Text style={styles.login}>Log in</Text>
       </TouchableOpacity>
     </View>
@@ -90,8 +133,7 @@ const signIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#dbeafe', // Softer background for better contrast
-    backgroundColor:'#b0bec5',
+    backgroundColor: '#b0bec5',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -105,15 +147,15 @@ const styles = StyleSheet.create({
   logo1: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain', // Ensures logo fits well
+    resizeMode: 'contain',
     borderRadius: 10,
   },
   text: {
-    fontSize: 18, // Increased for readability
-    color: '#333', // Darker text for better contrast
+    fontSize: 18,
+    color: '#333',
     textAlign: 'center',
     fontWeight: 'bold',
-    marginBottom: 15, // Added space below text
+    marginBottom: 15,
   },
   form_field: {
     flexDirection: 'row',
@@ -123,8 +165,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: '#fff',
     borderRadius: 12,
-    elevation: 5, // Reduced elevation for subtle depth
-    height: 55, // Slightly increased height for better touch target
+    elevation: 5,
+    height: 55,
     shadowColor: '#000',
     shadowOffset: { width: 1, height: 3 },
     shadowOpacity: 0.2,
@@ -133,7 +175,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     paddingHorizontal: 15,
-    fontSize: 16, // Larger font for readability
+    fontSize: 16,
     color: '#333',
   },
   inputPassword: {
@@ -153,7 +195,7 @@ const styles = StyleSheet.create({
     height: 55,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#d32f2f', // Darker red for better contrast
+    backgroundColor: '#d32f2f',
     borderRadius: 12,
     elevation: 5,
     shadowColor: '#000',
@@ -167,8 +209,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    letterSpacing: 1, // Improves legibility
+    letterSpacing: 1,
   },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    marginTop: -8,
+    marginBottom: 5,
+    marginLeft: 25,
+    alignSelf: 'flex-start',
+  }
 });
 
 export default Login;
