@@ -6,7 +6,7 @@ const WelcomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
-        <Image source={Logo} style={styles.logo1} />
+        <Image source={Logo} style={styles.logo1} resizeMode="contain" />
       </View>
     </View>
   );
@@ -14,21 +14,24 @@ const WelcomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1, // takes full screen
     backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
   },
   logo: {
-    backgroundColor: 'green',
-    width: '30%',
-    height: '10%',
+    width: 150,
+    height: 150,
     alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'green',
+    borderRadius: 10,
   },
   logo1: {
-    backgroundColor: 'blue',
     width: '100%',
     height: '100%',
     borderRadius: 10,
+    backgroundColor: 'blue',
   },
 });
 

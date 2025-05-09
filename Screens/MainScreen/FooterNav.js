@@ -7,31 +7,44 @@ const FooterNav = ({ onChangeScreen, activeScreen }) => {
   return (
     <View style={styles.container}>
       {/* Glance Button */}
-      <View style={styles.footer1}>   
-        <TouchableOpacity
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => onChangeScreen('glance')}
+      >
+        <FontAwesome6
+          name="grip-lines"
+          size={20}
+          color={activeScreen === 'glance' ? 'red' : 'black'}
+        />
+        <Text
           style={[
-            styles.button,
-            activeScreen === 'glance' && styles.activeButton, // Highlight active button
+            styles.buttonText,
+            { color: activeScreen === 'glance' ? 'red' : '#333' },
           ]}
-          onPress={() => onChangeScreen('glance')}
-        ><FontAwesome6  style={styles.icon}name="grip-lines" size={24} color="black" />
-          <Text style={styles.buttonText}> At a Glance</Text>
-        </TouchableOpacity>
-      </View>
+        >
+          At a Glance
+        </Text>
+      </TouchableOpacity>
 
       {/* Booking Diary Button */}
-      <View style={styles.footer1}>
-        
-        <TouchableOpacity
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => onChangeScreen('bookingDiary')}
+      >
+        <Feather
+          name="book-open"
+          size={20}
+          color={activeScreen === 'bookingDiary' ? 'red' : 'black'}
+        />
+        <Text
           style={[
-            styles.button,
-            activeScreen === 'bookingDiary' && styles.activeButton, // Highlight active button
+            styles.buttonText,
+            { color: activeScreen === 'bookingDiary' ? 'red' : '#333' },
           ]}
-          onPress={() => onChangeScreen('bookingDiary')}
-        ><Feather style={styles.icon} name="book-open" size={24} color="black" />
-          <Text style={styles.buttonText}>Booking Diary</Text>
-        </TouchableOpacity>
-      </View>
+        >
+          Booking Diary
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -39,35 +52,21 @@ const FooterNav = ({ onChangeScreen, activeScreen }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: '35%',
-    justifyContent: 'space-between',
-    padding: 10,
+    height: 70,
+    justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: 'white',
-    elevation: 20,
-    // marginVertical: '100%',
-    // backgroundColor:'green'
-  },
-  footer1: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    padding: 10,
+    backgroundColor: '#fff',
+    elevation: 8,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   },
   button: {
-    padding: 5,
-    borderRadius: 5,
+    alignItems: 'center',
   },
-  // activeButton: {
-  //   backgroundColor: '#007bff', // Highlight the active button
-  // },
   buttonText: {
-    color: 'black',
-    fontWeight: 'bold',
+    fontSize: 12,
+    marginTop: 4,
   },
-  icon:{
-    marginHorizontal:25,
-    
-  }
 });
 
 export default FooterNav;

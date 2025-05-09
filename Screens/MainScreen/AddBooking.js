@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -11,6 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import Checkbox from 'expo-checkbox'; // or from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
+import ShimmerUi from './ShimmerUi';
 
 // Sample constants
 const DayTime = [{ morning: 'Morning', evening: 'Evening' }];
@@ -170,7 +171,20 @@ export default function BookingForm() {
     // }
     setErrors(newErrors);
   }
-  
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time (e.g., checking auth, fetching configs)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return<ShimmerUi/>
+  }
 
   return (
     <View style={styles.container}>

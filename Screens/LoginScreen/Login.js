@@ -7,6 +7,7 @@ import Header from '../MainScreen/Header';
 import { showMessage } from "react-native-flash-message";
 
 
+
 const Login = ({ navigation }) => {
   const [emailfocus, setEmailFocus] = useState(false);
   const [passwordfocus, setPasswordFocus] = useState(false);
@@ -37,6 +38,7 @@ const signIn = () => {
 }
 
   return (
+
     <View style={styles.container}>
       <View style={styles.logo}>
         <Image source={Logo} style={styles.logo1} />
@@ -88,12 +90,14 @@ const signIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: '#dbeafe', // Softer background for better contrast
+    backgroundColor:'#b0bec5',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   logo: {
-    width: '40%',
+    width: '50%',
     height: '20%',
     marginVertical: 20,
     alignItems: 'center',
@@ -101,54 +105,69 @@ const styles = StyleSheet.create({
   logo1: {
     width: '100%',
     height: '100%',
+    resizeMode: 'contain', // Ensures logo fits well
     borderRadius: 10,
   },
   text: {
-    fontSize: 10,
-    color: 'black',
+    fontSize: 18, // Increased for readability
+    color: '#333', // Darker text for better contrast
     textAlign: 'center',
     fontWeight: 'bold',
+    marginBottom: 15, // Added space below text
   },
   form_field: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '80%',
-    marginVertical: 10,
-    paddingHorizontal: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    elevation: 20,
-    height: 50, // Ensures all fields have the same height
+    width: '90%',
+    marginVertical: 12,
+    paddingHorizontal: 15,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    elevation: 5, // Reduced elevation for subtle depth
+    height: 55, // Slightly increased height for better touch target
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   input: {
     flex: 1,
-    paddingHorizontal: 10,
-    height: '100%', // Matches the parent's height
+    paddingHorizontal: 15,
+    fontSize: 16, // Larger font for readability
+    color: '#333',
   },
   inputPassword: {
     flex: 1,
-    paddingHorizontal: 10,
-    height: '100%', // Matches the parent's height
+    paddingHorizontal: 15,
+    fontSize: 16,
+    color: '#333',
   },
   picker: {
     flex: 1,
-    height: '100%', // Matches the parent's height
-    paddingHorizontal: 10, // Adds padding for consistency
+    height: '100%',
+    paddingHorizontal: 10,
+    fontSize: 16,
   },
   btn1: {
-    width: '80%',
-    height: 50,
+    width: '90%',
+    height: 55,
     justifyContent: 'center',
-    paddingVertical: 10,
-    elevation: 20,
-    backgroundColor: 'red',
-    borderRadius: 10,
+    alignItems: 'center',
+    backgroundColor: '#d32f2f', // Darker red for better contrast
+    borderRadius: 12,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    marginTop: 20,
   },
   login: {
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+    letterSpacing: 1, // Improves legibility
   },
 });
 

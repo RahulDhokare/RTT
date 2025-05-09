@@ -1,20 +1,28 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View,ActivityIndicator,Text} from 'react-native';
 import WelcomeScreen from './Screens/LoginScreen/WelcomeScreen';
 import { useState, useEffect } from 'react';
 import Login from './Screens/LoginScreen/Login';
 import RootNavigation from './RootNavigation';
+import ShimmerUi from './Screens/MainScreen/ShimmerUi.js';
 
 export default function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoaded(true), 10000);
+    // Simulate loading time (e.g., checking auth, fetching configs)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, []);
 
+  if (isLoading) {
+    return<WelcomeScreen/>
+  }
   return (
+  
     <RootNavigation/>
   //   <View >
   //   {isLoaded?<WelcomeScreen/>:<Login/>}

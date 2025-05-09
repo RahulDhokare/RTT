@@ -1,76 +1,77 @@
-import React from 'react'
-import { View ,Text,StyleSheet} from 'react-native'
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-
 const BookingDetails = () => {
-  const peoplecount= 0;
+  const peoplecount = 0;
   const bookingCount = 0;
-  return (
-    <View style={styles.mainConatiner}>
-      <View style={styles.container}>
-    <Text style={styles.total}>Total Expected: </Text>
-    <Ionicons name="people-outline" size={24} color="black" />
-    <Text style={styles.count}>{peoplecount}</Text>
-    <Text style={styles.bookingText}> ({bookingCount} Booking)</Text>
-    </View>
-    <View style={styles.bookinginfo}>
-    <Ionicons name="information-circle-outline" size={24} color="black" />
-      <Text style={styles.bookinginfo_text}>
-       There is no booking for slected date.
-      </Text>
-    </View>
-    <View style={styles.separator} />
-    </View>
-    
 
-  )
-}
+  return (
+    <ScrollView contentContainerStyle={styles.mainContainer}>
+      <View style={styles.container}>
+        <Text style={styles.total}>Total Expected:</Text>
+        <Ionicons name="people-outline" size={24} color="black" />
+        <Text style={styles.count}>{peoplecount}</Text>
+        <Text style={styles.bookingText}>({bookingCount} Booking)</Text>
+      </View>
+
+      <View style={styles.bookingInfo}>
+        <Ionicons name="information-circle-outline" size={24} color="black" />
+        <Text style={styles.bookingInfoText}>
+          There is no booking for selected date.
+        </Text>
+      </View>
+
+      <View style={styles.separator} />
+    </ScrollView>
+  );
+};
+
 const styles = StyleSheet.create({
-  mainConatiner:{
-    width:'100%',
-    height:'71%',
+  mainContainer: {
+    paddingBottom: 20,
   },
   container: {
-    // flex: 1, 
-    padding: 20,
-    flexDirection: 'row', 
+    paddingHorizontal: 20,
+    paddingTop: 15,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
+    flexWrap: 'wrap',
   },
-  total:{
-    fontSize: 18, 
-    fontWeight: 'bold', 
+  total: {
+    fontSize: 18,
+    fontWeight: 'bold',
     marginHorizontal: 5,
   },
   count: {
-    fontSize: 18, 
-    fontWeight: 'bold', 
-    marginHorizontal: 5, 
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginHorizontal: 5,
   },
   bookingText: {
     fontSize: 16,
-    color: 'black', 
+    color: 'black',
   },
-  bookinginfo:{
+  bookingInfo: {
     flexDirection: 'row',
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: 'red',
+    flexWrap: 'wrap',
   },
-  bookinginfo_text:{
+  bookingInfoText: {
     fontSize: 16,
-    color: 'black', 
+    color: 'black',
+    marginLeft: 10,
   },
   separator: {
-    height: 1, 
-    backgroundColor: '#ccc', 
-    marginHorizontal: 20, 
-    marginVertical: 10, 
-    // backgroundColor:'red'
+    height: 1,
+    backgroundColor: '#ccc',
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
-})
+});
 
-export default BookingDetails
+export default BookingDetails;

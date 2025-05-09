@@ -1,60 +1,102 @@
-import React, { useState } from 'react'
-import { View,Text ,StatusBar,StyleSheet,TouchableOpacity} from 'react-native'
-import BookingDate from './BookingDate'
-import BookingDetails from './BookingDetails'
-import FooterNav from './FooterNav'
-import AddBooking from './AddBooking'
-import RestaurantName from './RestaurantName'
-import AntDesign from '@expo/vector-icons/AntDesign';
+import React, { useState, useEffect } from 'react';
 import {
-  createStaticNavigation,
-  useNavigation,
-} from '@react-navigation/native';
+  View,
+  Text,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
+import BookingDate from './BookingDate';
+import BookingDetails from './BookingDetails';
 import BookingDiary from './BookingDiary';
+import FooterNav from './FooterNav';
+import RestaurantName from './RestaurantName';
+import ShimmerUi from './ShimmerUi';
+
 const Header = () => {
-    const navigation = useNavigation();
-    const [activeScreen, setActiveScreen] = useState('glance');
-    
+  const navigation = useNavigation();
+  const [activeScreen, setActiveScreen] = useState('glance');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <ShimmerUi />;
+  }
+
   return (
-    <View style={styles.conainer}>
-      <View style={styles.content}>
-        <RestaurantName/>
-        <StatusBar />
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+
+      {/* Top Header */}
+      <View style={styles.header}>
+        <RestaurantName />
+      </View>
+
+      {/* Main Content */}
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         <BookingDate />
         {activeScreen === 'glance' ? <BookingDetails /> : <BookingDiary />}
-        </View>
-        <View style={styles.addBookingContainer}>
-        <TouchableOpacity 
-         onPress={() => navigation.navigate('Add New Booking')}>
-        <AntDesign name="pluscircle" size={60} color="red" />    
-        {/* <AddBooking />  */}
-        </TouchableOpacity>
-        
-      </View>
-      
-        <View>
-        <FooterNav style={styles.footer} onChangeScreen={setActiveScreen} activeScreen={activeScreen} />
-        </View>
-    </View>
-  )
-}
-const styles = StyleSheet.create({
-  conainer:{
-    flex:1,
-    // backgroundColor:'white'
-  },
-  
-  addBookingContainer: {
-    position: 'absolute',
-    bottom: 120, 
-    right: 20, 
-    // zIndex: 10, 
-  },
-  // footer:{
-  //   position: 'absolute',
-  //   bottom: 0,
-  //   // width: '100%',
-  // }
-})
+      </ScrollView>
 
-export default Header
+      {/* Floating Action Button */}
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => navigation.navigate('Add New Booking')}
+      >
+        <AntDesign name="pluscircle" size={60} color="red" />
+      </TouchableOpacity>
+
+      {/* Bottom Footer Nav */}
+      <View style={styles.footer}>
+        <FooterNav
+          onChangeScreen={setActiveScreen}
+          activeScreen={activeScreen}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  header: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: '#fff',
+    elevation: 2,
+    zIndex: 1,
+  },
+  contentContainer: {
+    paddingBottom: 150, // Enough space for FAB + Footer
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 100,
+    right: 20,
+    zIndex: 5,
+    elevation: 5,
+  },
+  footer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    zIndex: 2,
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    elevation: 5,
+  },
+});
+
+export default Header;
