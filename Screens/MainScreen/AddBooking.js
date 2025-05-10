@@ -13,6 +13,8 @@ import Checkbox from 'expo-checkbox'; // or from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
 import ShimmerUi from './ShimmerUi';
 import { DayTime , MealType } from '../../Constant';
+import { createBooking } from './../../Api/BookingService';
+import Header from './Header';
 
 
 
@@ -47,7 +49,8 @@ export default function BookingForm() {
     }
   };
 
-  const handleSubmit = () => {
+
+  const handleSubmit = async () =>  {
     if (!selectedValue) return alert('Please select a time slot');
     if (!selectedValue1) return alert('Please select a meal type');
     if (!guests) return alert('Please enter number of guests');
@@ -58,6 +61,7 @@ export default function BookingForm() {
     if (!duration) return alert('Please enter time duration');
 
     const bookingData = {
+      
       visitType: isChecked ? 'Walk-in' : 'On-Call',
       date,
       timeSlot: selectedValue,
@@ -76,7 +80,16 @@ export default function BookingForm() {
     };
 
     console.log('Booking Data:', bookingData);
-    alert('Form submitted successfully!');
+     try {
+    await createBooking(bookingData);
+    alert('Form submitted successfully!')
+    navigation.navigate("heder");
+      } catch (error) {
+    console.error('Error submitting booking:', error);
+    alert('Error submitting booking. Please try again.');
+  }
+
+    // alert('Form submitted successfully!');
     // navigation.navigate('SuccessScreen', { bookingData });
   };
 
