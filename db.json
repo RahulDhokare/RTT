@@ -1,40 +1,22 @@
 {
   "bookings": [
     {
-      "id": "7723",
       "visitType": "Walk-in",
-      "date": "2025-05-07T12:27:00.000Z",
-      "timeSlot": "11:00",
-      "mealType": "Dinner",
-      "guests": "2",
+      "date": "2025-05-16T14:14:00.000Z",
+      "timeSlot": "04:00",
+      "mealType": "Lunch",
+      "guests": "30",
       "mobile": "1234567890",
       "firstName": "Rahul",
-      "lastName": "Dhokare",
-      "email": "dhokarer23@gmail.com",
-      "duration": "20",
-      "dietary": "ter",
-      "specialRequest": "ter",
-      "notes": "tef",
-      "specialOffers": true,
-      "marketingConsent": true
-    },
-    {
-      "visitType": "On-Call",
-      "date": "2025-05-23T13:50:00.000Z",
-      "timeSlot": "07:00",
-      "mealType": "Lunch",
-      "guests": "10",
-      "mobile": "1234567890",
-      "firstName": "Test",
       "lastName": "Dhokare ",
       "email": "dhokarer24@gmail.com",
-      "duration": "20",
-      "dietary": "Any",
-      "specialRequest": "Afff",
-      "notes": "Rahaja",
+      "duration": "28",
+      "dietary": "Test",
+      "specialRequest": "Sta",
+      "notes": "Sysy",
       "specialOffers": true,
       "marketingConsent": true,
-      "id": "84cc"
+      "id": "f609"
     }
   ]
 }

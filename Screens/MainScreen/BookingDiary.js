@@ -92,8 +92,16 @@ useEffect(() => {
         <Text style={styles.count}>{totalGuests}</Text>
         <Text style={styles.bookingText}>({bookings.length} Booking)</Text>
       </View>
-
-
+      
+      
+      {bookings.length === 0 ? (
+       <View style={styles.bookingInfo}>
+        <Text style={styles.bookingInfoText}>
+          There is no booking for selected date.
+        </Text>
+      </View>
+      ) :
+    
      <View>
         {bookings.map((booking) => (
           <View key={booking.id} style={styles.bookingDetails}>
@@ -116,7 +124,8 @@ useEffect(() => {
           </View>
         ))}
       </View>
-
+      }
+ 
       {/* Modal Menu */}
       <Modal
         transparent={true}
@@ -223,6 +232,25 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontSize: 16,
     textAlign: "center",
+  },
+  bookingInfo: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  bookingInfoText: {
+    fontSize: 16,
+    color: 'black',
+    
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginHorizontal: 20,
+    marginVertical: 10,
   },
 });
 
