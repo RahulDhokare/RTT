@@ -94,7 +94,6 @@ export default function BookingForm() {
   };
 
   const validationGuest = () => {
-    console.log('Validating :', mobile);
     const newErrors = { ...errors };
     // Validate guests
   if (!guests.trim()) {
@@ -243,7 +242,7 @@ export default function BookingForm() {
           >
             <Picker.Item label="Select time slot" value="" />
             {timeOptions.map(([key, value]) => (
-              <Picker.Item key={key} label={value} value={key} />
+              <Picker.Item key={key} label={value} value={value} />
             ))}
           </Picker>
         </View>

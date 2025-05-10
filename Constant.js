@@ -42,9 +42,4 @@ export const Roles = [
     "Breakfast": 'Breakfast',
     "Lunch": 'Lunch',
     "Dinner": 'Dinner',
-    "Snack": 'Snack',
-    "Brunch": 'Brunch',
-    "Supper": 'Supper',
-    "Tea": 'Tea',
-    "Coffee": 'Coffee',
  }]
