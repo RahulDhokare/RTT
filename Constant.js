@@ -1,3 +1,16 @@
+//Email 
+export const loginEmail = {"email":"Admin@gmail.com"}
+//Password
+export const loginPassword = {"password":"Admin@123"}
+//roles
+export const Roles = [
+   { id: 0, role: 'Restaurant Owner' },
+   { id: 1, role: 'Restaurant Admin' },
+   { id: 2, role: 'Restaurant Manager' }
+];
+
+
+//Daytime
  export const DayTime = [{
     "0": '00:00',
     "1": '01:00',
@@ -24,7 +37,7 @@
     "22": '22:00',
     "23": '23:00',
  }]
-
+// mealType
  export const MealType =[{
     "Breakfast": 'Breakfast',
     "Lunch": 'Lunch',

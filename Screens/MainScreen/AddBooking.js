@@ -12,10 +12,9 @@ import { Picker } from '@react-native-picker/picker';
 import Checkbox from 'expo-checkbox'; // or from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native';
 import ShimmerUi from './ShimmerUi';
+import { DayTime , MealType } from '../../Constant';
 
-// Sample constants
-const DayTime = [{ morning: 'Morning', evening: 'Evening' }];
-const MealType = [{ veg: 'Vegetarian', nonveg: 'Non-Vegetarian' }];
+
 
 export default function BookingForm() {
   const navigation = useNavigation();
@@ -24,9 +23,10 @@ export default function BookingForm() {
   const [show, setShow] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedValue1, setSelectedValue1] = useState('');
-  const [isChecked, setChecked] = useState(false);
+  const [isChecked, setChecked] = useState(true);
   const [isChecked1, setChecked1] = useState(false);
-
+  const [ischeckBox, setIscheckBox] = useState(false);
+  const [ischeckBox1, setIscheckBox1] = useState(false);
   const [guests, setGuests] = useState('');
   const [mobile, setMobile] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -71,8 +71,8 @@ export default function BookingForm() {
       dietary,
       specialRequest,
       notes,
-      specialOffers: isChecked,
-      marketingConsent: isChecked1,
+      specialOffers: ischeckBox,
+      marketingConsent: ischeckBox1,
     };
 
     console.log('Booking Data:', bookingData);
@@ -86,9 +86,11 @@ export default function BookingForm() {
     // Validate guests
   if (!guests.trim()) {
     newErrors.guests = 'Guests is required';
-  } else if (!/^\d{1,2}$/.test(guests)) {
-    newErrors.guests = 'Enter a valid number (1–99)';
-  } else {
+  }
+  //  else if (!/^\d{1}$/.test(guests)) {
+  //   newErrors.guests = 'Enter a valid number (1–99)';
+  // }
+   else {
     delete newErrors.guests;
   }
   setErrors(newErrors);
@@ -219,7 +221,7 @@ export default function BookingForm() {
           )}
         </View>
 
-        <Text style={styles.textside}>Time Slot</Text>
+        <Text style={styles.textside}>Time Slot<Text style={{color:'red'}}>*</Text></Text>
         <View style={styles.pickerContainer}>
           <Picker
             style={styles.picker}
@@ -234,7 +236,7 @@ export default function BookingForm() {
         </View>
 
         <Text style={styles.textside}>
-          Meal Type* (Select Time Slot to update)
+          Meal Type<Text style={{color:'red'}}>*</Text> 
         </Text>
         <View style={styles.pickerContainer}>
           <Picker
@@ -249,7 +251,7 @@ export default function BookingForm() {
           </Picker>
         </View>
 
-        <Text style={styles.textside}>Number of Guests*</Text>
+        <Text style={styles.textside}>Number of Guests<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={[styles.input, errors.guests && { borderColor: "red" }]}
           placeholder="Enter Number of Guests"
@@ -263,7 +265,7 @@ export default function BookingForm() {
         />
         {errors.guests && <Text style={styles.errorText}>{errors.guests}</Text>}
 
-        <Text style={styles.textside}>Mobile Number*</Text>
+        <Text style={styles.textside}>Mobile Number<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={[styles.input, errors.mobile && { borderColor: "red" }]}
           placeholder="Enter Mobile Number"
@@ -277,7 +279,7 @@ export default function BookingForm() {
         />
         {errors.mobile && <Text style={styles.errorText}>{errors.mobile}</Text>}
 
-        <Text style={styles.textside}>First Name*</Text>
+        <Text style={styles.textside}>First Name<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={[styles.input, errors.firstName && { borderColor: "red" }]}
           placeholder="Enter First Name"
@@ -292,7 +294,7 @@ export default function BookingForm() {
           <Text style={styles.errorText}>{errors.firstName}</Text>
         )}
 
-        <Text style={styles.textside}>Last Name*</Text>
+        <Text style={styles.textside}>Last Name<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={[styles.input, errors.lastName && { borderColor: "red" }]}
           placeholder="Enter Last Name"
@@ -307,7 +309,7 @@ export default function BookingForm() {
           <Text style={styles.errorText}>{errors.lastName}</Text>
         )}
 
-        <Text style={styles.textside}>Email*</Text>
+        <Text style={styles.textside}>Email<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={[styles.input, errors.email && { borderColor: "red" }]}
           placeholder="Enter Email"
@@ -322,7 +324,7 @@ export default function BookingForm() {
         />
         {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
-        <Text style={styles.textside}>Time Duration (in minutes)*</Text>
+        <Text style={styles.textside}>Time Duration (in minutes)<Text style={{color:'red'}}>*</Text></Text>
         <TextInput
           style={[styles.input, errors.duration && { borderColor: "red" }]}
           placeholder="Time Duration"
@@ -364,8 +366,8 @@ export default function BookingForm() {
 
         <View style={styles.checkboxContainer}>
           <Checkbox
-            value={isChecked}
-            onValueChange={setChecked}
+            value={ischeckBox}
+            onValueChange={setIscheckBox}
             color={"red"}
           />
           <Text style={styles.checkboxText}>
@@ -375,8 +377,8 @@ export default function BookingForm() {
 
         <View style={styles.checkboxContainer}>
           <Checkbox
-            value={isChecked1}
-            onValueChange={setChecked1}
+            value={ischeckBox1}
+            onValueChange={setIscheckBox1}
             color={"red"}
           />
           <Text style={styles.checkboxText}>
@@ -411,7 +413,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
   },
   chipSelected: {
-    backgroundColor: '#ddd',
+    backgroundColor: 'red',
   },
   textside: { 
     marginTop: 10,
