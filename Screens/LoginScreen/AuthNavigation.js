@@ -5,6 +5,7 @@ import Header from "../MainScreen/Header";
 import AddBooking from "../MainScreen/AddBooking";
 import BookingDetails from "../MainScreen/BookingDetails";
 import BookingDiary from "../MainScreen/BookingDiary";
+import EditBooking from "../MainScreen/EditBooking";
 const Stack = createNativeStackNavigator();
 const AuthNavigation = () => {
   return (
@@ -23,6 +24,8 @@ const AuthNavigation = () => {
       />
 
       <Stack.Screen name="Add New Booking" component={AddBooking} />
+
+      <Stack.Screen name="Edit Booking" component={EditBooking} />
 
       <Stack.Screen name="BookingDetails" component={BookingDetails} />
 

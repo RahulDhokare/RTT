@@ -78,14 +78,11 @@ export default function BookingForm() {
       specialOffers: ischeckBox,
       marketingConsent: ischeckBox1,
     };
-
-    console.log('Booking Data:', bookingData);
      try {
     await createBooking(bookingData);
-    alert('Form submitted successfully!')
+    alert('Booking submitted successfully!')
     navigation.navigate("heder");
       } catch (error) {
-    console.error('Error submitting booking:', error);
     alert('Error submitting booking. Please try again.');
   }
 

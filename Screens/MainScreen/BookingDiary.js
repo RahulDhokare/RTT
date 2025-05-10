@@ -12,8 +12,10 @@ import { fetchBookings,deleteBooking } from "./../../Api/BookingService";
 import { useState, useEffect } from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Picker } from "react-native-web";
+import { useNavigation } from '@react-navigation/native';
 
 const BookingDiary = () => {
+  const navigation = useNavigation();
   const [bookings, setBookings] = useState([]);
   const [totalGuests, setTotalGuests] = useState([]);
   const [selectedBookingId, setSelectedBookingId] = useState(null);
@@ -51,9 +53,11 @@ useEffect(() => {
   };
 
   const handleEdit = () => {
+
     console.log("Edit booking ID:", selectedBookingId);
     setMenuVisible(false);
-    // Call your edit function here
+    navigation.navigate("Edit Booking", {
+      bookingId: selectedBookingId})    // Call your edit function here
   };
 
   const handleDelete = async () => {
