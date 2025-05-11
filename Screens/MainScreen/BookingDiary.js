@@ -72,15 +72,18 @@ useEffect(() => {
     setMenuVisible(false);
   }
 };
+  const mealsChange = () => {
+    console.log("Meals changed");
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.mainContainer}>
       {/* Chips */}
       <View style={styles.chipContainer}>
-        <TouchableOpacity style={styles.chip}>
+        <TouchableOpacity style={styles.chip} onPress={() => mealsChange()}>
           <Text style={styles.chipText}>Dinner</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.chip}>
+        <TouchableOpacity style={styles.chip} onPress={() => mealsChange()}>
           <Text style={styles.chipText}>Lunch</Text>
         </TouchableOpacity>
       </View>
