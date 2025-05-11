@@ -1,16 +1,33 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { fetchBookings } from "./../../Api/BookingService";
+import { useState, useEffect } from "react";
 
 const BookingDetails = () => {
   const peoplecount = 0;
   const bookingCount = 0;
+  const [bookings, setBookings] = useState([]);
   const statusData = [
     { label: "Pending", count: 0, total: 1 },
     { label: "Confirmed", count: 2, total: 2 },
     { label: "Cancelled", count: 1, total: 1 },
     { label: "No Show", count: 0, total: 0 },
   ];
+ const loadBookings = async () => {
+    try {
+      const response = await fetchBookings();
+      const Booking = response.data;
+      // console.log("Booking", Booking);
+      setBookings(response.data);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    }
+  };
+
+  useEffect(() => {
+      loadBookings();
+    }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.mainContainer}>
@@ -21,13 +38,14 @@ const BookingDetails = () => {
         <Text style={styles.bookingText}>({bookingCount} Booking)</Text>
       </View>
 
+      {bookings.length ===  0 ? (
       <View style={styles.bookingInfo}>
         <Ionicons name="information-circle-outline" size={24} color="black" />
         <Text style={styles.bookingInfoText}>
           There is no booking for selected date.
         </Text>
       </View>
-      
+      ) : (
       <View style={styles.card}>
         <View style={styles.headerRow}>
           <Text style={styles.dinnerText}>Dinner</Text>
@@ -60,7 +78,7 @@ const BookingDetails = () => {
           ))}
         </View>
       </View>
-
+      )}
       {/* <View style={styles.separator} /> */}
     </ScrollView>
   );
