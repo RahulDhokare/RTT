@@ -17,6 +17,42 @@
       "specialOffers": true,
       "marketingConsent": true,
       "id": "f609"
+    },
+    {
+      "id": "d27e",
+      "visitType": "Walk-in",
+      "date": "2025-05-11T14:31:05.863Z",
+      "timeSlot": "11:00",
+      "mealType": "Dinner",
+      "guests": "20",
+      "mobile": "1234569870",
+      "firstName": "Test",
+      "lastName": "Yghh",
+      "email": "Test@gmail.com",
+      "duration": "20",
+      "dietary": "Ok",
+      "specialRequest": "Ok",
+      "notes": "Ok",
+      "specialOffers": true,
+      "marketingConsent": true
+    },
+    {
+      "id": "c7f1",
+      "visitType": "On-Call",
+      "date": "2025-05-11T14:32:01.950Z",
+      "timeSlot": "06:00",
+      "mealType": "Dinner",
+      "guests": "5",
+      "mobile": "2580963147",
+      "firstName": "Jon",
+      "lastName": "Snow",
+      "email": "Snow@gmail.com",
+      "duration": "5",
+      "dietary": "Ok",
+      "specialRequest": "Ok",
+      "notes": "Ok",
+      "specialOffers": true,
+      "marketingConsent": true
     }
   ]
 }

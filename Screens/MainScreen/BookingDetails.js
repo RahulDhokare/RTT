@@ -8,13 +8,14 @@ const BookingDetails = () => {
   const peoplecount = 0;
   const bookingCount = 0;
   const [bookings, setBookings] = useState([]);
+  const [totalGuests, setTotalGuests] = useState([]);
   const statusData = [
     { label: "Pending", count: 0, total: 1 },
     { label: "Confirmed", count: 2, total: 2 },
     { label: "Cancelled", count: 1, total: 1 },
     { label: "No Show", count: 0, total: 0 },
   ];
- const loadBookings = async () => {
+  const loadBookings = async () => {
     try {
       const response = await fetchBookings();
       const Booking = response.data;
@@ -25,60 +26,84 @@ const BookingDetails = () => {
     }
   };
 
+  const calculateTotalGuests = () => {
+    const total = bookings.reduce(
+      (acc, booking) => acc + Number(booking.guests),
+      0
+    );
+    setTotalGuests(total);
+  };
+
   useEffect(() => {
-      loadBookings();
-    }, []);
+    calculateTotalGuests(bookings);
+  }, [bookings]);
+
+  useEffect(() => {
+    loadBookings();
+  }, []);
+
+  const groupedBookings = bookings.reduce((groups, bookings) => {
+    const meal = bookings.mealType;
+    if (!groups[meal]) {
+      groups[meal] = [];
+    }
+    groups[meal].push(bookings);
+    return groups;
+  }, {});
 
   return (
     <ScrollView contentContainerStyle={styles.mainContainer}>
       <View style={styles.container}>
         <Text style={styles.total}>Total Expected:</Text>
         <Ionicons name="people-outline" size={24} color="black" />
-        <Text style={styles.count}>{peoplecount}</Text>
-        <Text style={styles.bookingText}>({bookingCount} Booking)</Text>
+        <Text style={styles.count}>{totalGuests}</Text>
+        <Text style={styles.bookingText}>({bookings.length} Booking)</Text>
       </View>
 
-      {bookings.length ===  0 ? (
-      <View style={styles.bookingInfo}>
-        <Ionicons name="information-circle-outline" size={24} color="black" />
-        <Text style={styles.bookingInfoText}>
-          There is no booking for selected date.
-        </Text>
-      </View>
-      ) : (
-      <View style={styles.card}>
-        <View style={styles.headerRow}>
-          <Text style={styles.dinnerText}>Dinner</Text>
-          <Text style={styles.expectedText}>
-            Expected:{" "}
-            <Ionicons
-              style={styles.iconStyle}
-              name="people-outline"
-              size={24}
-              color="black"
-            />{" "}
-            {peoplecount}(0)
+      {bookings.length === 0 ? (
+        <View style={styles.bookingInfo}>
+          <Ionicons name="information-circle-outline" size={24} color="black" />
+          <Text style={styles.bookingInfoText}>
+            There is no booking for selected date.
           </Text>
         </View>
-        <Text style={styles.timingText}>(8:00 - 12:00)</Text>
-        <View style={styles.horizontalSeparator} />
-        <View style={styles.statusRow}>
-          {statusData.map((status, index) => (
-            <React.Fragment key={status.label}>
-              <View style={styles.statusBox}>
-                <Text style={styles.statusText}>{status.label}</Text>
-                <Text style={styles.count}>
-                  {status.count}({status.total})
-                </Text>
-              </View>
-              {index !== statusData.length - 1 && (
-                <View style={styles.separator} />
-              )}
-            </React.Fragment>
-          ))}
-        </View>
-      </View>
+      ) : (
+        Object.keys(groupedBookings).map((mealType) => (
+          <View key={mealType} style={styles.card}>
+            <View style={styles.headerRow}>
+              <Text style={styles.dinnerText}>{mealType}</Text>
+              <Text style={styles.expectedText}>
+                Expected:{" "}
+                <Ionicons
+                  style={styles.iconStyle}
+                  name="people-outline"
+                  size={24}
+                  color="black"
+                />{" "}
+                {peoplecount}(0)
+              </Text>
+            </View>
+            <Text style={styles.timingText}>(8:00 - 24:00)</Text>
+            <View style={styles.horizontalSeparator} />
+            <View style={styles.statusRow}>
+              {statusData.map((status, index) => (
+                <React.Fragment key={status.label}>
+                  <View style={styles.statusBox}>
+                    <Text style={styles.statusText}>{status.label}</Text>
+                    <Text style={styles.count}>
+                      {status.count}({status.total})
+                    </Text>
+                  </View>
+                  {index !== statusData.length - 1 && (
+                    <View style={styles.separator} />
+                  )}
+                </React.Fragment>
+              ))}
+            </View>
+          </View>
+        ))
       )}
+
       {/* <View style={styles.separator} /> */}
     </ScrollView>
   );
@@ -123,7 +148,7 @@ const styles = StyleSheet.create({
     color: "black",
     marginLeft: 10,
   },
-  horizontalSeparator:{
+  horizontalSeparator: {
     height: 1,
     backgroundColor: "#ccc",
     marginHorizontal: 20,

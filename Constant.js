@@ -39,7 +39,6 @@ export const Roles = [
  }]
 // mealType
  export const MealType =[{
-    "Breakfast": 'Breakfast',
     "Lunch": 'Lunch',
     "Dinner": 'Dinner',
  }]
