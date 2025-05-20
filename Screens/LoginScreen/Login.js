@@ -23,31 +23,31 @@ const Login = ({ navigation }) => {
 
 
   const signIn = () => {
-//     const newErrors = {};
+    const newErrors = {};
 
-//     if (!email.trim()) {
-//       newErrors.email = "Email is required";
-//     }
+    if (!email.trim()) {
+      newErrors.email = "Email is required";
+    }
 
-//     if (!password.trim()) {
-//       newErrors.password = "Password is required";
-//     }
+    if (!password.trim()) {
+      newErrors.password = "Password is required";
+    }
 
-//     if (!selectedRole) {
-//       newErrors.inValid = "Please select a role";
-//     }
+    if (!selectedRole) {
+      newErrors.inValid = "Please select a role";
+    }
 
-//    if (email !== loginEmail.email || password !== loginPassword.password) {
-//     console.log("invalid", email);
-//     newErrors.inValid = "Invalid email or password";
-// }
-navigation.navigate("heder");
+   if (email !== loginEmail.email || password !== loginPassword.password) {
+    console.log("invalid", email);
+    newErrors.inValid = "Invalid email or password";
+}
+// navigation.navigate("heder");
 
-    // if (Object.keys(newErrors).length === 0) {
-    //   navigation.navigate("heder");
-    // }
+    if (Object.keys(newErrors).length === 0) {
+      navigation.navigate("heder");
+    }
 
-    // setErrors(newErrors);
+    setErrors(newErrors);
   };
 
   const validationEmail = (email) => {
